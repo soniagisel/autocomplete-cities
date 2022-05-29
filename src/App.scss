@@ -1,0 +1,42 @@
+.app {
+    background: linear-gradient(#3678ff 0%, #a4ffdc 100%);
+    min-height: 100vh;
+    padding: 20px;
+
+    .wrapper {
+        width: 600px;
+        padding: 40px;
+        background: white;
+        margin: 100px auto;
+        text-align: center;
+        border-radius: 5px;
+        max-height: 130px;
+        filter: drop-shadow(0 5mm 3mm rgba(25, 25, 25, 0.2));
+    }
+
+    h1 {
+        font-size: 35px;
+        margin-bottom: 20px;
+        font-family: 'Verdana', sans-serif;
+    }
+
+    h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        font-family: 'Arial', sans-serif;
+    }
+
+    h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    li {
+        padding: 5px;
+    }
+
+    hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
