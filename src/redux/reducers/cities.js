@@ -1,13 +1,11 @@
 import { searchCities } from '../../api/citiesApi'
 
 const initialState = {
-    cityName: '',
     citiesList: [],
 }
 
 export const ACTION_TYPES = {
     SEARCH: 'SEARCH',
-    SAVE_CITY_NAME: 'SAVE_CITY_NAME',
 }
 
 const cities = (state = initialState, action) => {
@@ -16,11 +14,6 @@ const cities = (state = initialState, action) => {
             return {
                 ...state,
                 citiesList: action.payload.citiesList,
-            }
-        case ACTION_TYPES.SAVE_CITY_NAME:
-            return {
-                ...state,
-                cityName: action.payload.cityName,
             }
         default:
             return state

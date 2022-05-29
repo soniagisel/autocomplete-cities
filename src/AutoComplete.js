@@ -7,15 +7,14 @@ import { debounce } from './utils/index'
 
 const AutoComplete = () => {
     const dispatch = useDispatch()
-    const currentCityName = useSelector((state) => state.cities.cityName)
+    const listItemRef = useRef([])
     const currentCitiesList = useSelector((state) => state.cities.citiesList)
 
-    const listItemRef = useRef([])
-
+    const [currentCityName, setCurrentCityName] = useState('')
     const [isOnFocus, setIsOnFocus] = useState(false)
     const [isItemHovered, setIsItemHovered] = useState(false)
     const shouldListDisplay =
-        (isOnFocus && currentCitiesList?.length > 0 && currentCityName?.length > 2) || isItemHovered
+        (isOnFocus && currentCitiesList?.length > 0 && currentCityName.length > 2) || isItemHovered
     const [listCount, setListCount] = useState(0)
     const [itemHoveredIndex, setItemHoveredIndex] = useState(0)
 
@@ -29,7 +28,7 @@ const AutoComplete = () => {
     const onValueChange = async (event) => {
         const value = event.target.value
 
-        dispatch({ type: ACTION_TYPES.SAVE_CITY_NAME, payload: { cityName: value } })
+        setCurrentCityName(value)
 
         if (value.length >= 3) {
             requestCities(value)
@@ -37,7 +36,7 @@ const AutoComplete = () => {
     }
 
     const saveSelectedCity = (value) => {
-        dispatch({ type: ACTION_TYPES.SAVE_CITY_NAME, payload: { cityName: value } })
+        setCurrentCityName(value)
         setIsItemHovered(false)
     }
 
