@@ -3,7 +3,7 @@ import styles from './AutoComplete.module.scss'
 import { dispatchSearchCity } from '../src/redux/reducers/cities'
 import { useDispatch, useSelector } from 'react-redux'
 import { ACTION_TYPES } from '../src/redux/reducers/cities'
-import { debounce, isElementInViewport } from './utils/index'
+import { debounce } from './utils/index'
 
 const AutoComplete = () => {
     const dispatch = useDispatch()
