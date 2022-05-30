@@ -4,11 +4,17 @@
 
     input {
         height: 1.5rem;
+        padding: 5px 25px;
+        border: none;
+        margin-bottom: 10px;
+        border-radius: 5px;
     }
 
     ul {
-        max-height: 15.2rem;
+        max-height: 15.5rem;
         overflow: auto;
+        border-radius: 5px;
+
         li {
             background-color: white;
             height: 1rem;
@@ -17,6 +23,7 @@
             border-color: rgb(220, 218, 218);
             font-family: 'Verdana', sans-serif;
             font-size: 13px;
+            color: #5f91f6;
 
             &.hovered {
                 background-color: #5f91f6;

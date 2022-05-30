@@ -97,6 +97,7 @@ const AutoComplete = () => {
                 onChange={onValueChange}
                 type='text'
                 onKeyDown={handleArrowEvents}
+                placeholder='Buenos Aires, Argentina'
             />
             <ul>
                 {shouldListDisplay &&

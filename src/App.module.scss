@@ -1,12 +1,17 @@
 .app {
-    background: linear-gradient(#3678ff 0%, #a4ffdc 100%);
-    min-height: 100vh;
-    padding: 20px;
+    background-image: url('../src/images/city.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: start;
 
     .wrapper {
         width: 600px;
         padding: 40px;
-        background: white;
+        color: white;
         margin: 100px auto;
         text-align: center;
         border-radius: 5px;
@@ -32,7 +37,7 @@
     }
 
     li {
-        padding: 5px;
+        padding: 6px;
     }
 
     hr {
