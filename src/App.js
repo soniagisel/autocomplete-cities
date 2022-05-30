@@ -6,7 +6,7 @@ function App() {
         <div className={styles.app}>
             <div className={styles.wrapper}>
                 <h1>Welcome to the Cities Finder</h1>
-                <h2>Start typing and we'll find the city you're looking for!</h2>
+                <h2>Start typing and we'll help you find the city you're looking for!</h2>
 
                 <AutoComplete />
             </div>

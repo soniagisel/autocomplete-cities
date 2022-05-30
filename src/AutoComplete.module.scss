@@ -20,7 +20,7 @@
             height: 1rem;
             font-family: 'Verdana', sans-serif;
             font-size: 13px;
-            color: #5f91f6;
+            color: #cf9180;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -32,7 +32,7 @@
             }
 
             &.hovered {
-                background-color: #5f91f6;
+                background-color: #cf9180;
                 color: white;
             }
         }
