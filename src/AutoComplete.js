@@ -3,7 +3,7 @@ import styles from './AutoComplete.module.scss'
 import { dispatchSearchCity } from '../src/redux/reducers/cities'
 import { useDispatch, useSelector } from 'react-redux'
 import { ACTION_TYPES } from '../src/redux/reducers/cities'
-import { debounce } from './utils/index'
+import { debounce, arrayContainsNull } from './utils/index'
 
 const AutoComplete = () => {
     const dispatch = useDispatch()
@@ -17,6 +17,7 @@ const AutoComplete = () => {
         (isOnFocus && currentCitiesList?.length > 0 && currentCityName.length > 2) || isItemHovered
     const [listCount, setListCount] = useState(0)
     const [itemHoveredIndex, setItemHoveredIndex] = useState(0)
+    const noMatches = currentCityName.length > 2 && currentCitiesList.length === 0
 
     const requestCities = debounce(async (value) => {
         dispatch({
@@ -41,6 +42,8 @@ const AutoComplete = () => {
     }
 
     const handleArrowEvents = ({ key }) => {
+        if (noMatches) return
+
         let count
         const indexExists = listItemRef.current.indexOf(listItemRef.current[count])
         //const countReflectsAValidIndex = count >= 0 && count < listItemRef.current.length
@@ -88,7 +91,7 @@ const AutoComplete = () => {
             const lastPosition = currentCitiesList.length - 1
             setListCount(lastPosition)
             listItemRef.current[lastPosition].scrollIntoView(false)
-        } else if (listCount >= currentCitiesList?.length) {
+        } else if (listCount >= currentCitiesList.length && !arrayContainsNull(listItemRef.current)) {
             setListCount(0)
             listItemRef.current.length > 0 && listItemRef.current[0].scrollIntoView(true)
         }
@@ -106,7 +109,7 @@ const AutoComplete = () => {
                 placeholder='Buenos Aires, Argentina'
             />
             <ul>
-                {shouldListDisplay &&
+                {true &&
                     currentCitiesList.map((city, i) => (
                         <li
                             key={i}
@@ -119,6 +122,7 @@ const AutoComplete = () => {
                             {city}
                         </li>
                     ))}
+                {noMatches && <li>No matches found for "{currentCityName}"</li>}
             </ul>
         </div>
     )

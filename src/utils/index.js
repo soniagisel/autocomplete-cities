@@ -1,3 +1,4 @@
 import debounce from './debounce'
+import arrayContainsNull from './arrayContainsNull'
 
-export { debounce }
+export { debounce, arrayContainsNull }

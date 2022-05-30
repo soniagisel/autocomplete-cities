@@ -9,5 +9,5 @@ export const searchCities = async (cities) =>
         })
         .catch((error) => {
             console.log(error.toJSON())
-            return 'Something went wrong, please try again in a few minutes.'
+            return []
         })
