@@ -43,24 +43,30 @@ const AutoComplete = () => {
     const handleArrowEvents = ({ key }) => {
         let count
         const indexExists = listItemRef.current.indexOf(listItemRef.current[count])
-        if (key === 'ArrowDown') {
-            count = listCount + 1
-            if (indexExists) {
-                setListCount(count)
-                setItemHoveredIndex(count)
-                if (count >= 0 && count < listItemRef.current.length) {
-                    listItemRef.current[count].scrollIntoView(false)
+        //const countReflectsAValidIndex = count >= 0 && count < listItemRef.current.length
+        switch (key) {
+            case 'ArrowDown':
+                count = listCount + 1
+                if (indexExists) {
+                    setListCount(count)
+                    setItemHoveredIndex(count)
+                    if (count >= 0 && count < listItemRef.current.length) {
+                        listItemRef.current[count].scrollIntoView(false)
+                    }
                 }
-            }
-        } else if (key === 'ArrowUp') {
-            count = listCount - 1
-            if (indexExists) {
-                setListCount(count)
-                setItemHoveredIndex(count)
-                if (count >= 0 && count < listItemRef.current.length) {
-                    listItemRef.current[count].scrollIntoView(true)
+                break
+            case 'ArrowUp':
+                count = listCount - 1
+                if (indexExists) {
+                    setListCount(count)
+                    setItemHoveredIndex(count)
+                    if (count >= 0 && count < listItemRef.current.length) {
+                        listItemRef.current[count].scrollIntoView(true)
+                    }
                 }
-            }
+                break
+            default:
+                return
         }
     }
 
