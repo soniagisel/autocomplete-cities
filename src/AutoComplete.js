@@ -109,7 +109,7 @@ const AutoComplete = () => {
                 placeholder='Buenos Aires, Argentina'
             />
             <ul>
-                {true &&
+                {shouldListDisplay &&
                     currentCitiesList.map((city, i) => (
                         <li
                             key={i}
