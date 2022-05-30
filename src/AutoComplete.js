@@ -15,7 +15,7 @@ const AutoComplete = () => {
     const [isItemHovered, setIsItemHovered] = useState(false)
     const shouldListDisplay =
         (isOnFocus && currentCitiesList?.length > 0 && currentCityName.length > 2) || isItemHovered
-    const [listCount, setListCount] = useState(-1)
+    const [listCount, setListCount] = useState(0)
     const [itemHoveredIndex, setItemHoveredIndex] = useState(0)
     const noMatches = currentCityName.length > 2 && currentCitiesList.length === 0
 
