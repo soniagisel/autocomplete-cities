@@ -15,7 +15,7 @@ const AutoComplete = () => {
     const [isItemHovered, setIsItemHovered] = useState(false)
     const shouldListDisplay =
         (isOnFocus && currentCitiesList?.length > 0 && currentCityName.length > 2) || isItemHovered
-    const [listCount, setListCount] = useState(0)
+    const [listCount, setListCount] = useState(-1)
     const [itemHoveredIndex, setItemHoveredIndex] = useState(0)
     const noMatches = currentCityName.length > 2 && currentCitiesList.length === 0
 
@@ -87,7 +87,7 @@ const AutoComplete = () => {
     }
 
     useEffect(() => {
-        if (listCount < 0) {
+        if (listCount < 0 && currentCitiesList.length > 0) {
             const lastPosition = currentCitiesList.length - 1
             setListCount(lastPosition)
             listItemRef.current[lastPosition].scrollIntoView(false)
@@ -106,7 +106,7 @@ const AutoComplete = () => {
                 onChange={onValueChange}
                 type='text'
                 onKeyDown={handleArrowEvents}
-                placeholder='Buenos Aires, Argentina'
+                placeholder='Sydney, Australia'
             />
             <ul>
                 {shouldListDisplay &&
