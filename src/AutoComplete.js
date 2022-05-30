@@ -122,7 +122,7 @@ const AutoComplete = () => {
                             {city}
                         </li>
                     ))}
-                {noMatches && <li>No matches found for "{currentCityName}"</li>}
+                {noMatches && <li className={styles.hovered}>No matches found for "{currentCityName}"</li>}
             </ul>
         </div>
     )
