@@ -44,28 +44,53 @@ const AutoComplete = () => {
     const handleArrowEvents = ({ key }) => {
         if (noMatches) return
 
+        // let count
+        // const indexExists = listItemRef.current.indexOf(listItemRef.current[count])
+        // const countReflectsAValidIndex = (num) => num >= 0 && num < listItemRef.current.length
+        // switch (key) {
+        //     case 'ArrowDown':
+        //         console.log('indexExists', indexExists)
+        //         count = listCount + 1
+        //         if (indexExists) {
+        //             setListCount(count)
+        //             setItemHoveredIndex(count)
+        //             if (countReflectsAValidIndex(count)) {
+        //                 listItemRef.current[count].scrollIntoView(false)
+        //             }
+        //         }
+        //         break
+        //     case 'ArrowUp':
+        //         console.log('indexExists', indexExists)
+        //         count = listCount - 1
+        //         if (indexExists) {
+        //             setListCount(count)
+        //             setItemHoveredIndex(count)
+        //             if (countReflectsAValidIndex(count)) {
+        //                 listItemRef.current[count].scrollIntoView(true)
+        //             }
+        //         }
+        //         break
+        //     default:
+        //         return
+        // }
+
         let count
-        const indexExists = listItemRef.current.indexOf(listItemRef.current[count])
-        //const countReflectsAValidIndex = count >= 0 && count < listItemRef.current.length
+        const isValidIndex = (num) => num >= 0 && num < listItemRef.current.length
         switch (key) {
             case 'ArrowDown':
                 count = listCount + 1
-                if (indexExists) {
-                    setListCount(count)
-                    setItemHoveredIndex(count)
-                    if (count >= 0 && count < listItemRef.current.length) {
-                        listItemRef.current[count].scrollIntoView(false)
-                    }
+                setListCount(count)
+                setItemHoveredIndex(count)
+                if (isValidIndex(count)) {
+                    listItemRef.current[count].scrollIntoView(false)
                 }
                 break
             case 'ArrowUp':
                 count = listCount - 1
-                if (indexExists) {
-                    setListCount(count)
-                    setItemHoveredIndex(count)
-                    if (count >= 0 && count < listItemRef.current.length) {
-                        listItemRef.current[count].scrollIntoView(true)
-                    }
+                setListCount(count)
+                setItemHoveredIndex(count)
+                if (isValidIndex(count)) {
+                    listItemRef.current[count].scrollIntoView(true)
                 }
                 break
             default:
