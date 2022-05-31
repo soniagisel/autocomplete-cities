@@ -24,7 +24,7 @@ const AutoComplete = () => {
             type: ACTION_TYPES.SEARCH,
             payload: { citiesList: await dispatchSearchCity(value) },
         })
-    }, 500)
+    }, 300)
 
     const onValueChange = async (event) => {
         const value = event.target.value
@@ -43,36 +43,6 @@ const AutoComplete = () => {
 
     const handleArrowEvents = ({ key }) => {
         if (noMatches) return
-
-        // let count
-        // const indexExists = listItemRef.current.indexOf(listItemRef.current[count])
-        // const countReflectsAValidIndex = (num) => num >= 0 && num < listItemRef.current.length
-        // switch (key) {
-        //     case 'ArrowDown':
-        //         console.log('indexExists', indexExists)
-        //         count = listCount + 1
-        //         if (indexExists) {
-        //             setListCount(count)
-        //             setItemHoveredIndex(count)
-        //             if (countReflectsAValidIndex(count)) {
-        //                 listItemRef.current[count].scrollIntoView(false)
-        //             }
-        //         }
-        //         break
-        //     case 'ArrowUp':
-        //         console.log('indexExists', indexExists)
-        //         count = listCount - 1
-        //         if (indexExists) {
-        //             setListCount(count)
-        //             setItemHoveredIndex(count)
-        //             if (countReflectsAValidIndex(count)) {
-        //                 listItemRef.current[count].scrollIntoView(true)
-        //             }
-        //         }
-        //         break
-        //     default:
-        //         return
-        // }
 
         let count
         const isValidIndex = (num) => num >= 0 && num < listItemRef.current.length
@@ -115,12 +85,17 @@ const AutoComplete = () => {
         if (listCount < 0 && currentCitiesList.length > 0) {
             const lastPosition = currentCitiesList.length - 1
             setListCount(lastPosition)
+            setItemHoveredIndex(lastPosition)
             listItemRef.current[lastPosition].scrollIntoView(false)
         } else if (listCount >= currentCitiesList.length && !arrayContainsNull(listItemRef.current)) {
             setListCount(0)
+            setItemHoveredIndex(0)
             listItemRef.current.length > 0 && listItemRef.current[0].scrollIntoView(true)
         }
     }, [listCount, currentCitiesList])
+
+    console.log('itemHoveredIndex', itemHoveredIndex)
+    console.log('listCount', listCount)
 
     return (
         <div className={styles.searchBoxContainer}>
@@ -147,7 +122,7 @@ const AutoComplete = () => {
                             {city}
                         </li>
                     ))}
-                {noMatches && <li className={styles.hovered}>No matches found for "{currentCityName}"</li>}
+                {noMatches && <li className={styles.hovered}>No results found for "{currentCityName}"</li>}
             </ul>
         </div>
     )
