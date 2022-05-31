@@ -20,9 +20,6 @@ const cities = (state = initialState, action) => {
     }
 }
 
-export const dispatchSearchCity = async (inputVal) =>
-    await searchCities(inputVal).then((data) =>
-        data.data._embedded['city:search-results'].map((city) => city.matching_full_name),
-    )
+export const dispatchSearchCity = async (inputVal) => await searchCities(inputVal)
 
 export default cities
