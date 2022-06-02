@@ -8,6 +8,7 @@
         border: none;
         margin-bottom: 10px;
         border-radius: 5px;
+        color: #026891;
     }
 
     ul {
@@ -20,7 +21,7 @@
             height: 1rem;
             font-family: 'Verdana', sans-serif;
             font-size: 13px;
-            color: #cf9180;
+            color: #e98a70;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -32,7 +33,7 @@
             }
 
             &.hovered {
-                background-color: #cf9180;
+                background-color: #e98a70;
                 color: white;
             }
         }

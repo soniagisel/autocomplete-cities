@@ -13,17 +13,22 @@ const AutoComplete = () => {
     const [currentCityName, setCurrentCityName] = useState('')
     const [isOnFocus, setIsOnFocus] = useState(false)
     const [isItemHovered, setIsItemHovered] = useState(false)
-    const shouldListDisplay =
-        (isOnFocus && currentCitiesList?.length > 0 && currentCityName.length > 2) || isItemHovered
     const [listCount, setListCount] = useState(0)
     const [itemHoveredIndex, setItemHoveredIndex] = useState(0)
+    const [isArrowNavigationActive, setIsArrowNavigationActive] = useState(false)
+
     const noMatches = currentCityName.length > 2 && currentCitiesList.length === 0
+    const shouldListDisplay = (isOnFocus && currentCitiesList.length > 0 && currentCityName.length > 2) || isItemHovered
 
     const requestCities = debounce(async (value) => {
         dispatch({
             type: ACTION_TYPES.SEARCH,
             payload: { citiesList: await dispatchSearchCity(value) },
         })
+    }, 300)
+
+    const delayMouseEvents = debounce(() => {
+        setIsArrowNavigationActive(false)
     }, 300)
 
     const onValueChange = async (event) => {
@@ -43,6 +48,8 @@ const AutoComplete = () => {
 
     const handleArrowEvents = ({ key }) => {
         if (noMatches) return
+        setIsArrowNavigationActive(true)
+        delayMouseEvents()
 
         let count
         const isValidIndex = (num) => num >= 0 && num < listItemRef.current.length
@@ -69,6 +76,8 @@ const AutoComplete = () => {
     }
 
     const mouseEnter = (event) => {
+        if (isArrowNavigationActive) return
+
         const hoveredElementIndex = event._targetInst.index
         setItemHoveredIndex(hoveredElementIndex)
         setListCount(hoveredElementIndex)
@@ -76,6 +85,8 @@ const AutoComplete = () => {
     }
 
     const mouseLeave = () => {
+        if (isArrowNavigationActive) return
+
         setItemHoveredIndex(null)
         setListCount(null)
         setIsItemHovered(false)
@@ -93,9 +104,6 @@ const AutoComplete = () => {
             listItemRef.current.length > 0 && listItemRef.current[0].scrollIntoView(true)
         }
     }, [listCount, currentCitiesList])
-
-    console.log('itemHoveredIndex', itemHoveredIndex)
-    console.log('listCount', listCount)
 
     return (
         <div className={styles.searchBoxContainer}>
