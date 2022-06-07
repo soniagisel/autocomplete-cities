@@ -11,6 +11,7 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
     const [isArrowNavigationActive, setIsArrowNavigationActive] = useState(false)
 
     const listItemRef = useRef([])
+    // TODO: noMatches should have a condition to hide the error message on blur
     const noMatches = inputValue.length > minValueLength - 1 && currentList.length === 0
     const shouldListDisplay =
         (isOnFocus && currentList.length > 0 && inputValue.length > minValueLength - 1) || isItemHovered
@@ -26,6 +27,7 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
 
     const handleArrowEvents = ({ key }) => {
         if (noMatches) return
+        // Mouse events need to be delayed when using the arrow navigation so the counters work properly.
         setIsArrowNavigationActive(true)
         delayMouseEvents()
 
@@ -87,6 +89,7 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
         <div className={styles.searchBoxContainer}>
             <input
                 value={inputValue}
+                // TODO: when on focus the 1st element in the list should be highlighted
                 onFocus={() => setIsOnFocus(true)}
                 onBlur={() => setIsOnFocus(false)}
                 onChange={onChange}
