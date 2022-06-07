@@ -1,48 +1,27 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styles from './AutoComplete.module.scss'
-import { dispatchSearchCity } from '../src/redux/reducers/cities'
-import { useDispatch, useSelector } from 'react-redux'
-import { ACTION_TYPES } from '../src/redux/reducers/cities'
-import { debounce, arrayContainsNull } from './utils/index'
+import { debounce, arrayContainsNull } from '../../utils/index'
+import PropTypes from 'prop-types'
 
-const AutoComplete = () => {
-    const dispatch = useDispatch()
+const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, inputValue, onSelectedItemClick }) => {
     const listItemRef = useRef([])
-    const currentCitiesList = useSelector((state) => state.cities.citiesList)
 
-    const [currentCityName, setCurrentCityName] = useState('')
     const [isOnFocus, setIsOnFocus] = useState(false)
     const [isItemHovered, setIsItemHovered] = useState(false)
     const [listCount, setListCount] = useState(0)
     const [itemHoveredIndex, setItemHoveredIndex] = useState(0)
     const [isArrowNavigationActive, setIsArrowNavigationActive] = useState(false)
 
-    const noMatches = currentCityName.length > 2 && currentCitiesList.length === 0
-    const shouldListDisplay = (isOnFocus && currentCitiesList.length > 0 && currentCityName.length > 2) || isItemHovered
-
-    const requestCities = debounce(async (value) => {
-        dispatch({
-            type: ACTION_TYPES.SEARCH,
-            payload: { citiesList: await dispatchSearchCity(value) },
-        })
-    }, 300)
+    const noMatches = inputValue.length > minValueLength - 1 && currentList.length === 0
+    const shouldListDisplay =
+        (isOnFocus && currentList.length > 0 && inputValue.length > minValueLength - 1) || isItemHovered
 
     const delayMouseEvents = debounce(() => {
         setIsArrowNavigationActive(false)
     }, 300)
 
-    const onValueChange = async (event) => {
-        const value = event.target.value
-
-        setCurrentCityName(value)
-
-        if (value.length >= 3) {
-            requestCities(value)
-        }
-    }
-
-    const saveSelectedCity = (value) => {
-        setCurrentCityName(value)
+    const saveSelectedItem = (value) => {
+        onSelectedItemClick(value)
         setIsItemHovered(false)
     }
 
@@ -93,47 +72,56 @@ const AutoComplete = () => {
     }
 
     useEffect(() => {
-        if (listCount < 0 && currentCitiesList.length > 0) {
-            const lastPosition = currentCitiesList.length - 1
+        if (listCount < 0 && currentList.length > 0) {
+            const lastPosition = currentList.length - 1
             setListCount(lastPosition)
             setItemHoveredIndex(lastPosition)
             listItemRef.current[lastPosition].scrollIntoView(false)
-        } else if (listCount >= currentCitiesList.length && !arrayContainsNull(listItemRef.current)) {
+        } else if (listCount >= currentList.length && !arrayContainsNull(listItemRef.current)) {
             setListCount(0)
             setItemHoveredIndex(0)
             listItemRef.current.length > 0 && listItemRef.current[0].scrollIntoView(true)
         }
-    }, [listCount, currentCitiesList])
+    }, [listCount, currentList])
 
     return (
         <div className={styles.searchBoxContainer}>
             <input
-                value={currentCityName}
+                value={inputValue}
                 onFocus={() => setIsOnFocus(true)}
                 onBlur={() => setIsOnFocus(false)}
-                onChange={onValueChange}
+                onChange={onChange}
                 type='text'
                 onKeyDown={handleArrowEvents}
-                placeholder='Sydney, Australia'
+                placeholder={placeholderText}
             />
             <ul>
                 {shouldListDisplay &&
-                    currentCitiesList.map((city, i) => (
+                    currentList.map((item, i) => (
                         <li
                             key={i}
                             ref={(ref) => (listItemRef.current[i] = ref)}
                             onMouseEnter={mouseEnter}
                             onMouseLeave={mouseLeave}
-                            onClick={() => saveSelectedCity(city)}
+                            onClick={() => saveSelectedItem(item)}
                             className={listCount === i || itemHoveredIndex === i ? styles.hovered : ''}
                         >
-                            {city}
+                            {item}
                         </li>
                     ))}
-                {noMatches && <li className={styles.hovered}>No results found for "{currentCityName}"</li>}
+                {noMatches && <li className={styles.hovered}>No results found for "{inputValue}"</li>}
             </ul>
         </div>
     )
+}
+
+AutoComplete.propTypes = {
+    currentList: PropTypes.array.isRequired,
+    minValueLength: PropTypes.number,
+    placeholderText: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    inputValue: PropTypes.string.isRequired,
+    onSelectedItemClick: PropTypes.func.isRequired,
 }
 
 export default AutoComplete
