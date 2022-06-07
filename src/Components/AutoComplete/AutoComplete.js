@@ -4,14 +4,13 @@ import { debounce, arrayContainsNull } from '../../utils/index'
 import PropTypes from 'prop-types'
 
 const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, inputValue, onSelectedItemClick }) => {
-    const listItemRef = useRef([])
-
     const [isOnFocus, setIsOnFocus] = useState(false)
     const [isItemHovered, setIsItemHovered] = useState(false)
     const [listCount, setListCount] = useState(0)
     const [itemHoveredIndex, setItemHoveredIndex] = useState(0)
     const [isArrowNavigationActive, setIsArrowNavigationActive] = useState(false)
 
+    const listItemRef = useRef([])
     const noMatches = inputValue.length > minValueLength - 1 && currentList.length === 0
     const shouldListDisplay =
         (isOnFocus && currentList.length > 0 && inputValue.length > minValueLength - 1) || isItemHovered
