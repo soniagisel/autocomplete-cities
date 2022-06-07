@@ -53,7 +53,7 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
         }
     }
 
-    const mouseEnter = (event) => {
+    const handleMouseEnter = (event) => {
         if (isArrowNavigationActive) return
 
         const hoveredElementIndex = event._targetInst.index
@@ -62,7 +62,7 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
         setIsItemHovered(true)
     }
 
-    const mouseLeave = () => {
+    const handleMouseLeave = () => {
         if (isArrowNavigationActive) return
 
         setItemHoveredIndex(null)
@@ -100,8 +100,8 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
                         <li
                             key={i}
                             ref={(ref) => (listItemRef.current[i] = ref)}
-                            onMouseEnter={mouseEnter}
-                            onMouseLeave={mouseLeave}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                             onClick={() => saveSelectedItem(item)}
                             className={listCount === i || itemHoveredIndex === i ? styles.hovered : ''}
                         >
