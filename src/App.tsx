@@ -4,21 +4,22 @@ import AutoComplete from './Components/AutoComplete/AutoComplete'
 import { useSelector, useDispatch } from 'react-redux'
 import { debounce } from './utils'
 import { ACTION_TYPES, dispatchSearchCity } from './redux/reducers/cities'
+import { RootState } from './redux/store'
 
 const App = () => {
     const dispatch = useDispatch()
     const minValueLength = 3
-    const citiesList = useSelector((state) => state.cities.citiesList)
+    const citiesList = useSelector((state: RootState) => state.cities.citiesList)
     const [currentInputValue, setCurrentInputValue] = useState('')
 
-    const requestCities = debounce(async (value) => {
+    const requestCities = debounce(async (value: string) => {
         dispatch({
             type: ACTION_TYPES.SEARCH,
             payload: { citiesList: await dispatchSearchCity(value) },
         })
     }, 300)
 
-    const onValueChange = async (event) => {
+    const onValueChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
 
         setCurrentInputValue(value)
@@ -28,7 +29,7 @@ const App = () => {
         }
     }
 
-    const onSelectedItemClick = (value) => setCurrentInputValue(value)
+    const onSelectedItemClick = (value: string) => setCurrentInputValue(value)
 
     return (
         <div className={styles.app}>

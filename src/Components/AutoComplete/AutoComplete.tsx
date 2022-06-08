@@ -1,16 +1,31 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styles from './AutoComplete.module.scss'
 import { debounce, arrayContainsNull } from '../../utils/index'
-import PropTypes from 'prop-types'
 
-const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, inputValue, onSelectedItemClick }) => {
+interface AutoCompleteProps {
+    currentList: string[]
+    minValueLength: number
+    placeholderText: string
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    inputValue: string
+    onSelectedItemClick: (value: string) => void
+}
+
+const AutoComplete: React.FC<AutoCompleteProps> = ({
+    currentList,
+    minValueLength,
+    placeholderText,
+    onChange,
+    inputValue,
+    onSelectedItemClick,
+}) => {
     const [isOnFocus, setIsOnFocus] = useState(false)
     const [isItemHovered, setIsItemHovered] = useState(false)
-    const [listCount, setListCount] = useState(0)
-    const [itemHoveredIndex, setItemHoveredIndex] = useState(0)
+    const [listCount, setListCount] = useState<number | null>(0)
+    const [itemHoveredIndex, setItemHoveredIndex] = useState<number | null>(0)
     const [isArrowNavigationActive, setIsArrowNavigationActive] = useState(false)
 
-    const listItemRef = useRef([])
+    const listItemRef = useRef<HTMLLIElement[]>([])
     // TODO: noMatches should have a condition to hide the error message on blur
     const noMatches = inputValue.length > minValueLength - 1 && currentList.length === 0
     const shouldListDisplay =
@@ -20,22 +35,22 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
         setIsArrowNavigationActive(false)
     }, 300)
 
-    const saveSelectedItem = (value) => {
+    const saveSelectedItem = (value: string) => {
         onSelectedItemClick(value)
         setIsItemHovered(false)
     }
 
-    const handleArrowEvents = ({ key }) => {
+    const handleArrowEvents = ({ key }: { key: string }) => {
         if (noMatches) return
         // Mouse events need to be delayed when using the arrow navigation so the counters work properly.
         setIsArrowNavigationActive(true)
         delayMouseEvents()
 
         let count
-        const isValidIndex = (num) => num >= 0 && num < listItemRef.current.length
+        const isValidIndex = (num: number) => num >= 0 && num < listItemRef.current.length
         switch (key) {
             case 'ArrowDown':
-                count = listCount + 1
+                count = listCount! + 1
                 setListCount(count)
                 setItemHoveredIndex(count)
                 if (isValidIndex(count)) {
@@ -43,7 +58,7 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
                 }
                 break
             case 'ArrowUp':
-                count = listCount - 1
+                count = listCount! - 1
                 setListCount(count)
                 setItemHoveredIndex(count)
                 if (isValidIndex(count)) {
@@ -55,7 +70,7 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
         }
     }
 
-    const handleMouseEnter = (event) => {
+    const handleMouseEnter = (event: any) => {
         if (isArrowNavigationActive) return
 
         const hoveredElementIndex = event._targetInst.index
@@ -72,13 +87,17 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
         setIsItemHovered(false)
     }
 
+    const assignRef = (ref: any, i: number) => {
+        return (listItemRef.current[i] = ref)
+    }
+
     useEffect(() => {
-        if (listCount < 0 && currentList.length > 0) {
+        if (listCount! < 0 && currentList.length > 0) {
             const lastPosition = currentList.length - 1
             setListCount(lastPosition)
             setItemHoveredIndex(lastPosition)
             listItemRef.current[lastPosition].scrollIntoView(false)
-        } else if (listCount >= currentList.length && !arrayContainsNull(listItemRef.current)) {
+        } else if (listCount! >= currentList.length && !arrayContainsNull(listItemRef.current)) {
             setListCount(0)
             setItemHoveredIndex(0)
             listItemRef.current.length > 0 && listItemRef.current[0].scrollIntoView(true)
@@ -102,7 +121,7 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
                     currentList.map((item, i) => (
                         <li
                             key={i}
-                            ref={(ref) => (listItemRef.current[i] = ref)}
+                            ref={(ref) => assignRef(ref, i)}
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                             onClick={() => saveSelectedItem(item)}
@@ -115,15 +134,6 @@ const AutoComplete = ({ currentList, minValueLength, placeholderText, onChange, 
             </ul>
         </div>
     )
-}
-
-AutoComplete.propTypes = {
-    currentList: PropTypes.array.isRequired,
-    minValueLength: PropTypes.number,
-    placeholderText: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    inputValue: PropTypes.string.isRequired,
-    onSelectedItemClick: PropTypes.func.isRequired,
 }
 
 export default AutoComplete

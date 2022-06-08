@@ -1,4 +1,4 @@
-const arrayContainsNull = (arr) => {
+const arrayContainsNull = (arr: any[]) => {
     return arr.some((el) => el === null)
 }
 

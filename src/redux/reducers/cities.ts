@@ -1,14 +1,19 @@
 import { searchCities } from '../../api/citiesApi'
+import { AnyAction } from 'redux'
 
-const initialState = {
+interface InitialState {
+    citiesList: string[]
+}
+
+const initialState: InitialState = {
     citiesList: [],
 }
 
-export const ACTION_TYPES = {
-    SEARCH: 'SEARCH',
+export enum ACTION_TYPES {
+    SEARCH = 'SEARCH',
 }
 
-const cities = (state = initialState, action) => {
+const cities = (state = initialState, action: AnyAction) => {
     switch (action.type) {
         case ACTION_TYPES.SEARCH:
             return {
@@ -20,6 +25,6 @@ const cities = (state = initialState, action) => {
     }
 }
 
-export const dispatchSearchCity = async (inputVal) => await searchCities(inputVal)
+export const dispatchSearchCity = async (inputVal: string) => await searchCities(inputVal)
 
 export default cities

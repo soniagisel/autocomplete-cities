@@ -48,6 +48,13 @@
         "@storybook/addon-links": "^6.1.18",
         "@storybook/node-logger": "^6.1.18",
         "@storybook/preset-create-react-app": "^3.1.6",
-        "@storybook/react": "^6.1.18"
+        "@storybook/react": "^6.1.18",
+        "@types/jest": "^28.1.1",
+        "@types/node": "^17.0.40",
+        "@types/react": "^18.0.12",
+        "@types/react-dom": "^18.0.5",
+        "@types/react-redux": "^7.1.24",
+        "redux-devtools-extension": "^2.13.9",
+        "typescript": "^4.7.3"
     }
 }
