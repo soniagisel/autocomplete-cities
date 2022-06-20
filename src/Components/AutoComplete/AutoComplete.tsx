@@ -124,6 +124,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
                 {!isFetching &&
                     shouldListDisplay &&
                     currentList.map((item, i) => (
+                        //TODO: move list to another component to memoize
                         <li
                             key={i}
                             ref={(ref) => assignRef(ref, i)}
