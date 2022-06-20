@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styles from './AutoComplete.module.scss'
 import { debounce, arrayContainsNull } from '../../utils/index'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faRotate } from '@fortawesome/free-solid-svg-icons'
 
 interface AutoCompleteProps {
     currentList: string[]
@@ -9,6 +11,7 @@ interface AutoCompleteProps {
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
     inputValue: string
     onSelectedItemClick: (value: string) => void
+    isFetching: boolean
 }
 
 const AutoComplete: React.FC<AutoCompleteProps> = ({
@@ -18,6 +21,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
     onChange,
     inputValue,
     onSelectedItemClick,
+    isFetching,
 }) => {
     const [isOnFocus, setIsOnFocus] = useState(false)
     const [isItemHovered, setIsItemHovered] = useState(false)
@@ -117,7 +121,8 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
                 placeholder={placeholderText}
             />
             <ul>
-                {shouldListDisplay &&
+                {!isFetching &&
+                    shouldListDisplay &&
                     currentList.map((item, i) => (
                         <li
                             key={i}
@@ -130,7 +135,12 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
                             {item}
                         </li>
                     ))}
-                {noMatches && <li className={styles.hovered}>No results found for "{inputValue}"</li>}
+                {isFetching && (
+                    <li className={styles.hovered}>
+                        <FontAwesomeIcon size='lg' icon={faRotate} spin />
+                    </li>
+                )}
+                {!isFetching && noMatches && <li className={styles.hovered}>No results found for "{inputValue}"</li>}
             </ul>
         </div>
     )

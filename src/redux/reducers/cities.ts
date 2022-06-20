@@ -1,4 +1,3 @@
-import { searchCities } from '../../api/citiesApi'
 import { AnyAction } from 'redux'
 
 interface InitialState {
@@ -24,7 +23,5 @@ const cities = (state = initialState, action: AnyAction) => {
             return state
     }
 }
-
-export const dispatchSearchCity = async (inputVal: string) => await searchCities(inputVal)
 
 export default cities

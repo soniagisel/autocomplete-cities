@@ -1,22 +1,31 @@
 import React, { useState } from 'react'
 import styles from './App.module.scss'
 import AutoComplete from './Components/AutoComplete/AutoComplete'
-import { useSelector, useDispatch } from 'react-redux'
 import { debounce } from './utils'
-import { ACTION_TYPES, dispatchSearchCity } from './redux/reducers/cities'
-import { RootState } from './redux/store'
+import { useLazyGetCitiesByNameQuery } from './api/citiesApi'
 
 const App = () => {
-    const dispatch = useDispatch()
+    const [
+        trigger,
+        { data, currentData, error, isUninitialized, isLoading, isFetching, isSuccess, isError },
+    ] = useLazyGetCitiesByNameQuery()
     const minValueLength = 3
-    const citiesList = useSelector((state: RootState) => state.cities.citiesList)
     const [currentInputValue, setCurrentInputValue] = useState('')
+    const currentList = isSuccess && data ? data : []
 
-    const requestCities = debounce(async (value: string) => {
-        dispatch({
-            type: ACTION_TYPES.SEARCH,
-            payload: { citiesList: await dispatchSearchCity(value) },
-        })
+    console.log('data', data)
+    console.log('currentData', currentData)
+    console.log('error', error)
+    console.log('isUninitialized', isUninitialized)
+    console.log('isLoading', isLoading)
+    console.log('isFetching', isFetching)
+    console.log('isFetching', isFetching)
+    console.log('isSuccess', isSuccess)
+    console.log('isError', isError)
+
+    //TODO: Check debounce performance
+    const requestCities = debounce((value: string) => {
+        trigger(value)
     }, 300)
 
     const onValueChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,12 +47,13 @@ const App = () => {
                 <h2>Start typing and we'll help you find the city you're looking for!</h2>
 
                 <AutoComplete
-                    currentList={citiesList}
+                    currentList={currentList}
                     placeholderText='Sydney, Australia'
                     onChange={onValueChange}
                     inputValue={currentInputValue}
                     onSelectedItemClick={onSelectedItemClick}
                     minValueLength={minValueLength}
+                    isFetching={isFetching}
                 />
             </div>
         </div>
