@@ -5,23 +5,17 @@ import { debounce } from './utils'
 import { useLazyGetCitiesByNameQuery } from './api/citiesApi'
 
 const App = () => {
-    const [
-        trigger,
-        { data, currentData, error, isUninitialized, isLoading, isFetching, isSuccess, isError },
-    ] = useLazyGetCitiesByNameQuery()
+    const [trigger, { data, isFetching, isSuccess }] = useLazyGetCitiesByNameQuery()
     const minValueLength = 3
     const [currentInputValue, setCurrentInputValue] = useState('')
     const currentList = isSuccess && data ? data : []
 
-    console.log('data', data)
-    console.log('currentData', currentData)
-    console.log('error', error)
-    console.log('isUninitialized', isUninitialized)
-    console.log('isLoading', isLoading)
-    console.log('isFetching', isFetching)
-    console.log('isFetching', isFetching)
-    console.log('isSuccess', isSuccess)
-    console.log('isError', isError)
+    //TODO: Add background image to body and spinner until site is fully loaded
+    //console.log('isLoading', isLoading)
+
+    //TODO: Create Error Page
+    // console.log('isError', isError)
+    // console.log('error', error)
 
     //TODO: Check debounce performance
     const requestCities = debounce((value: string) => {
