@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './App.module.scss'
 import AutoComplete from './Components/AutoComplete/AutoComplete'
-import { debounce } from './utils'
+import { useDebounceString } from './utils'
 import { useLazyGetCitiesByNameQuery } from './api/citiesApi'
 
 const App = () => {
     const [trigger, { data, isFetching, isSuccess }] = useLazyGetCitiesByNameQuery()
-    const minValueLength = 3
     const [currentInputValue, setCurrentInputValue] = useState('')
+    const searchValue = useDebounceString(currentInputValue, 300)
+    const minValueLength = 3
     const currentList = isSuccess && data ? data : []
 
     //TODO: Add background image to body and spinner until site is fully loaded
@@ -17,22 +18,18 @@ const App = () => {
     // console.log('isError', isError)
     // console.log('error', error)
 
-    //TODO: Check debounce performance
-    const requestCities = debounce((value: string) => {
-        trigger(value)
-    }, 300)
-
     const onValueChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
-
         setCurrentInputValue(value)
-
-        if (value.length >= minValueLength) {
-            requestCities(value)
-        }
     }
 
     const onSelectedItemClick = (value: string) => setCurrentInputValue(value)
+
+    useEffect(() => {
+        if (searchValue.length >= minValueLength) {
+            trigger(searchValue)
+        }
+    }, [searchValue, trigger])
 
     return (
         <div className={styles.app}>

@@ -26,6 +26,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            text-transform: capitalize;
 
             &:not(:first-child) {
                 border-top: 1px;
