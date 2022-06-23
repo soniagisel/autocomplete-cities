@@ -1,35 +1,39 @@
 import React, { useEffect, useState } from 'react'
 import styles from './App.module.scss'
 import AutoComplete from './Components/AutoComplete/AutoComplete'
-import ErrorPage from './Components/ErrorPage/ErrorPage'
 import { useDebounceString } from './utils'
 import { useLazyGetCitiesByNameQuery } from './api/citiesApi'
 
 const App = () => {
-    const [trigger, { data, isFetching, isSuccess, isError, error }] = useLazyGetCitiesByNameQuery()
+    const [trigger, { data, isFetching, isSuccess, isError }] = useLazyGetCitiesByNameQuery()
     const [currentInputValue, setCurrentInputValue] = useState('')
     const searchValue = useDebounceString(currentInputValue, 300)
     const minValueLength = 3
     const currentList = isSuccess && data ? data : []
+    const [shouldSearch, setShouldSearch] = useState(true)
 
     //TODO: Add background image to body and spinner until site is fully loaded
 
     useEffect(() => {
-        if (searchValue.length >= minValueLength) {
+        if (shouldSearch && searchValue.length >= minValueLength) {
             trigger(searchValue)
         }
-    }, [searchValue, trigger])
-
-    if (isError) {
-        return <ErrorPage />
-    }
+    }, [searchValue, trigger, shouldSearch])
 
     const onValueChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value
         setCurrentInputValue(value)
+        if (value !== searchValue) {
+            setShouldSearch(true)
+        }
     }
 
-    const onSelectedItemClick = (value: string) => setCurrentInputValue(value)
+    const onSelectedItemClick = (value: string) => {
+        setShouldSearch(false)
+        setCurrentInputValue(value)
+    }
+
+    const onRetry = () => trigger(searchValue)
 
     return (
         <div onLoad={() => console.log('LOADED')} className={styles.app}>
@@ -45,6 +49,8 @@ const App = () => {
                     onSelectedItemClick={onSelectedItemClick}
                     minValueLength={minValueLength}
                     isFetching={isFetching}
+                    isError={isError}
+                    onRetry={onRetry}
                 />
             </div>
         </div>

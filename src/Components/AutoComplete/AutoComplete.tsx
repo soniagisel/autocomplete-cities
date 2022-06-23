@@ -12,6 +12,8 @@ interface AutoCompleteProps {
     inputValue: string
     onSelectedItemClick: (value: string) => void
     isFetching: boolean
+    isError: boolean
+    onRetry: () => void
 }
 
 const AutoComplete: React.FC<AutoCompleteProps> = ({
@@ -22,6 +24,8 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
     inputValue,
     onSelectedItemClick,
     isFetching,
+    isError,
+    onRetry,
 }) => {
     const [isOnFocus, setIsOnFocus] = useState(false)
     const [isItemHovered, setIsItemHovered] = useState(false)
@@ -30,10 +34,9 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
     const [isArrowNavigationActive, setIsArrowNavigationActive] = useState(false)
 
     const listItemRef = useRef<HTMLLIElement[]>([])
-    // TODO: noMatches should have a condition to hide the error message on blur
     const noMatches = inputValue.length > minValueLength - 1 && currentList.length === 0
     const shouldListDisplay =
-        (isOnFocus && currentList.length > 0 && inputValue.length > minValueLength - 1) || isItemHovered
+        (isOnFocus && currentList.length > 0 && inputValue.length > minValueLength - 1 && !isFetching) || isItemHovered
 
     const delayMouseEvents = debounce(() => {
         setIsArrowNavigationActive(false)
@@ -121,8 +124,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
                 placeholder={placeholderText}
             />
             <ul>
-                {!isFetching &&
-                    shouldListDisplay &&
+                {shouldListDisplay &&
                     currentList.map((item, i) => (
                         //TODO: move list to another component to memoize
                         <li
@@ -136,12 +138,18 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
                             {item}
                         </li>
                     ))}
-                {isFetching && (
+
+                {isFetching ? (
                     <li className={styles.hovered}>
                         <FontAwesomeIcon size='lg' icon={faRotate} spin />
                     </li>
-                )}
-                {!isFetching && noMatches && <li className={styles.hovered}>No results found for "{inputValue}"</li>}
+                ) : isError ? (
+                    <li className={styles.hovered}>
+                        Oops! Something went werong, click <button onClick={onRetry}>here</button> to retry.
+                    </li>
+                ) : isOnFocus && noMatches ? (
+                    <li className={styles.hovered}>No results found for "{inputValue}"</li>
+                ) : null}
             </ul>
         </div>
     )

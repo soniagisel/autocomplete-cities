@@ -38,6 +38,25 @@
                 background-color: #e98a70;
                 color: white;
             }
+
+            button {
+                text-transform: capitalize;
+                border: none;
+                background: transparent;
+                color: white;
+                padding: 0;
+                cursor: pointer;
+                border-style: hidden hidden solid hidden;
+
+                box-shadow: inset 0 0 0 0 white;
+                padding: 0 0.1rem;
+                transition: color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+                &:hover {
+                    color: #e98a70;
+                    box-shadow: inset 200px 0 0 0 white;
+                }
+            }
         }
     }
 }
