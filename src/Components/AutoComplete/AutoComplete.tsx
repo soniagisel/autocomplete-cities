@@ -111,6 +111,8 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
         }
     }, [listCount, currentList])
 
+    //TODO: Error message should disappear on blur
+
     return (
         <div className={styles.searchBoxContainer}>
             <input
@@ -145,7 +147,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
                     </li>
                 ) : isError ? (
                     <li className={styles.hovered}>
-                        Oops! Something went werong, click <button onClick={onRetry}>here</button> to retry.
+                        Oops! Something went wrong, click <button onClick={onRetry}>here</button> to retry.
                     </li>
                 ) : isOnFocus && noMatches ? (
                     <li className={styles.hovered}>No results found for "{inputValue}"</li>
