@@ -1,3 +1,5 @@
+// eslint-disable-next-line
+import 'symbol-observable'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './reset.scss'
