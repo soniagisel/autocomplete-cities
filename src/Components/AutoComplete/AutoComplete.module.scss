@@ -19,14 +19,17 @@
 
         li {
             background-color: white;
-            height: 1rem;
             font-family: 'Verdana', sans-serif;
             font-size: 13px;
             color: #e98a70;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
             text-transform: capitalize;
+
+            @media (min-width: 500px) {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                height: 1rem;
+            }
 
             &:not(:first-child) {
                 border-top: 1px;

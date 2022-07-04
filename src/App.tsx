@@ -38,7 +38,7 @@ const App = () => {
     return (
         <div onLoad={() => console.log('LOADED')} className={styles.app}>
             <div className={styles.wrapper}>
-                <h1>Welcome to the Cities Finder</h1>
+                <h1>Cities Finder</h1>
                 <h2>Start typing and we'll help you find the city you're looking for!</h2>
 
                 <AutoComplete

@@ -35,8 +35,13 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
 
     const listItemRef = useRef<HTMLLIElement[]>([])
     const noMatches = inputValue.length > minValueLength - 1 && currentList.length === 0
+    const [fetchCounter, setFetchCounter] = useState(0)
     const shouldListDisplay =
         (isOnFocus && currentList.length > 0 && inputValue.length > minValueLength - 1 && !isFetching) || isItemHovered
+    const noServiceMessage =
+        fetchCounter < 3
+            ? 'Oops! Something went wrong. To retry, click '
+            : 'The service seems to be unavailable, please come back later or retry by clicking '
 
     const delayMouseEvents = debounce(() => {
         setIsArrowNavigationActive(false)
@@ -98,6 +103,11 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
         return (listItemRef.current[i] = ref)
     }
 
+    const onFetchRetry = () => {
+        onRetry()
+        setFetchCounter(fetchCounter + 1)
+    }
+
     useEffect(() => {
         if (listCount! < 0 && currentList.length > 0) {
             const lastPosition = currentList.length - 1
@@ -111,7 +121,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
         }
     }, [listCount, currentList])
 
-    //TODO: Error message should disappear on blur
+    //TODO: Evaluate if error message should disappear on blur
 
     return (
         <div className={styles.searchBoxContainer}>
@@ -147,7 +157,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
                     </li>
                 ) : isError ? (
                     <li className={styles.hovered}>
-                        Oops! Something went wrong, click <button onClick={onRetry}>here</button> to retry.
+                        {noServiceMessage} <button onClick={onFetchRetry}>here</button>.
                     </li>
                 ) : isOnFocus && noMatches ? (
                     <li className={styles.hovered}>No results found for "{inputValue}"</li>
