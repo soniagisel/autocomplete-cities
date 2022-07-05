@@ -34,10 +34,13 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
     const [isArrowNavigationActive, setIsArrowNavigationActive] = useState(false)
 
     const listItemRef = useRef<HTMLLIElement[]>([])
-    const noMatches = inputValue.length > minValueLength - 1 && currentList.length === 0
     const [fetchCounter, setFetchCounter] = useState(0)
-    const shouldListDisplay =
-        (isOnFocus && currentList.length > 0 && inputValue.length > minValueLength - 1 && !isFetching) || isItemHovered
+
+    //TODO: review -1
+    const noMatches = inputValue.length > minValueLength - 1 && currentList.length === 0
+    const listHasContent = isOnFocus && currentList.length > 0 && inputValue.length > minValueLength - 1 && !isFetching
+    const shouldListDisplay = listHasContent || isItemHovered
+
     const noServiceMessage =
         fetchCounter < 3
             ? 'Oops! Something went wrong. To retry, click '
@@ -76,6 +79,11 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
                 if (isValidIndex(count)) {
                     listItemRef.current[count].scrollIntoView(true)
                 }
+                break
+            case 'Enter':
+                saveSelectedItem(currentList[listCount!])
+                setIsOnFocus(false)
+                document.querySelector('input')!.blur()
                 break
             default:
                 return
