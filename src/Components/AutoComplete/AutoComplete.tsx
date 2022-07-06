@@ -142,6 +142,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
                 type='text'
                 onKeyDown={handleArrowEvents}
                 placeholder={placeholderText}
+                autoFocus
             />
             <ul>
                 {shouldListDisplay &&
